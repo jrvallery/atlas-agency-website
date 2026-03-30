@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services | Atlas AI — Boulder's Private AI Agency</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#0f172a',
+                        slate: '#1e293b',
+                        electric: '#3b82f6',
+                        accent: '#60a5fa'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 50%, #a5f3fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .niche-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .niche-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 0 40px rgba(59,130,246,0.18);
+            border-color: #3b82f6;
+        }
+        .niche-card:hover .card-icon {
+            background-color: rgba(59,130,246,0.3);
+            transform: scale(1.05);
+        }
+        .card-icon {
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .feature-tag {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(59,130,246,0.1);
+            border: 1px solid rgba(59,130,246,0.25);
+            border-radius: 999px;
+            padding: 0.2rem 0.75rem;
+            font-size: 0.75rem;
+            color: #60a5fa;
+            font-weight: 500;
+        }
+        #mobile-menu { transition: max-height 0.3s ease, opacity 0.3s ease; overflow: hidden; max-height: 0; opacity: 0; }
+        #mobile-menu.open { max-height: 300px; opacity: 1; }
+    </style>
+</head>
+<body class="bg-navy text-white antialiased flex flex-col min-h-screen">
+
+    <!-- NAV -->
+    <nav class="bg-slate/90 backdrop-blur border-b border-gray-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="font-bold text-2xl tracking-tighter text-electric flex items-center gap-2">
+                    <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    Atlas AI
+                </a>
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="index.html" class="hover:text-accent hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">Home</a>
+                    <a href="services.html" class="text-accent bg-white/5 px-3 py-2 rounded-md text-sm font-semibold">Services</a>
+                    <a href="pricing.html" class="hover:text-accent hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-colors">Pricing</a>
+                    <a href="contact.html" class="ml-3 bg-electric hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-lg shadow-blue-500/20">Get Started</a>
+                </div>
+                <button id="nav-toggle" class="md:hidden p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 transition-colors" aria-label="Toggle menu">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden border-t border-gray-800 bg-slate/95 px-4">
+            <div class="py-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 rounded-md text-sm font-medium hover:text-accent hover:bg-white/5 transition-colors">Home</a>
+                <a href="services.html" class="block px-3 py-2 rounded-md text-sm font-semibold text-accent">Services</a>
+                <a href="pricing.html" class="block px-3 py-2 rounded-md text-sm font-medium hover:text-accent hover:bg-white/5 transition-colors">Pricing</a>
+                <a href="contact.html" class="block mt-2 px-4 py-2 bg-electric rounded-lg text-sm font-bold text-white text-center">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow">
+        <!-- PAGE HEADER -->
+        <section class="py-20 px-4 text-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,_rgba(59,130,246,0.2)_0%,_transparent_70%)] pointer-events-none"></div>
+            <div class="relative max-w-3xl mx-auto">
+                <span class="feature-tag mb-6 inline-block">What We Build</span>
+                <h1 class="text-4xl sm:text-5xl font-extrabold mb-5">
+                    AI Employees Tailored to<br>
+                    <span class="gradient-text">Your Industry</span>
+                </h1>
+                <p class="text-gray-300 text-lg leading-relaxed">
+                    Generic chatbots fail because they don't know your business. We build deeply customized AI agents trained on your specific workflows, products, and customers.
+                </p>
+            </div>
+        </section>
+
+        <!-- NICHE CARDS -->
+        <section class="px-4 pb-24">
+            <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-8">
+
+                <!-- CARD 1: Health & Wellness -->
+                <div class="niche-card bg-slate border border-gray-800 rounded-3xl overflow-hidden">
+                    <div class="h-2 bg-gradient-to-r from-green-500 to-teal-400"></div>
+                    <div class="p-8 lg:p-10">
+                        <div class="card-icon w-16 h-16 bg-green-500/15 rounded-2xl flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                            </svg>
+                        </div>
+                        <div class="flex items-start justify-between gap-4 mb-3">
+                            <h2 class="text-2xl font-extrabold">Health, Wellness & Fitness</h2>
+                            <span class="feature-tag text-green-400 border-green-400/30 bg-green-400/10 whitespace-nowrap shrink-0">Most Popular</span>
+                        </div>
+                        <p class="text-gray-400 mb-8 leading-relaxed">
+                            From yoga studios to med spas to personal trainers — your AI handles client intake, class bookings, FAQ responses, and follow-ups so you can focus on actually helping people.
+                        </p>
+                        <div class="grid sm:grid-cols-2 gap-3 mb-8">
+                            <div class="bg-navy/60 rounded-xl p-4 border border-gray-800">
+                                <h4 class="font-semibold text-sm mb-1 text-white">Appointment Booking</h4>
+                                <p class="text-xs text-gray-400">Syncs with your calendar. Zero double-bookings.</p>
+                            </div>
+                            <div class="bg-navy/60 rounded-xl p-4 border border-gray-800">
+                                <h4 class="font-semibold text-sm mb-1 text-white">Client Intake Forms</h4>
+                                <p class="text-xs text-gray-400">AI collects health history and preferences before the first session.</p>
+                            </div>
+                            <div class="bg-navy/60 rounded-xl p-4 border border-gray-800">
+                                <h4 class="font-semibold text-sm mb-1 text-white">Class/Package FAQ</h4>
+                                <p class="text-xs text-gray-400">Answers pricing, cancellation, and availability questions 24/7.</p>
+                            </div>
+                            <div class="bg-navy/60 rounded-xl p-4 border border-gray-800">
+                                <h4 class="font-semibold text-sm mb-1 text-white">Re-engagement Nudges</h4>
+                                <p class="text-xs text-gray-400">Follows up with lapsed clients to bring them back in.</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-8">
+                            <span class="feature-tag">Yoga Studios</span>
+                            <span class="feature-tag">Med Spas</span>
+                            <span class="feature-tag">Personal Trainers</span>
+                            <span class="feature-tag">Physical Therapy</span>
+                            <span class="feature-tag">Nutrition Coaches</span>
+                        </div>
+                        <a href="contact.html" class="block text-center bg-green-500/15 hover:bg-green-500/25 border border-green-500/30 text-green-400 font-semibold px-6 py-3 rounded-xl transition-colors">
+                            Build My Health & Wellness AI →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- CARD 2: Home Services -->
+                <div class="niche-card bg-slate border border-gray-800 rounded-3xl overflow-hidden">
+                    <div class="h-2 bg-gradient-to-r from-orange-500 to-amber-400"></div>
+                    <div class="p-8 lg:p-10">
+                        <div class="card-icon w-16 h-16 bg-orange-500/15 rounded-2xl flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-extrabold mb-3">Home Services & Contractors</h2>
+                        <p class="text-gray-400 mb-8 leading-relaxed">
+                            Plumbers, roofers, landscapers, cleaners — stop missing calls and losing jobs to faster competitors. Your AI qualifies leads, books jobs, and sends estimates while you're on site.
+                        </p>
+                        <div class="grid sm:grid-cols-2 gap-3 mb-8">
+                            <div class="bg-navy/60 rounded-xl p-4 border border-gray-800">
+                                <h4 class="font-semibold text-sm mb-1 text-white">Lead Qualification</h4>
+                                <p class="text-xs text-gray-400">Gathers job details, location, and urgency before you call back.</p>
+                            </div>
+                            <div class="bg-navy/60 rounded-xl p-4 border border-gray-800">
+                                <h4 class="font-semibold text-sm mb-1 text-white">Estimate Requests</h4>
+                                <p class="text-xs text-gray-400">Collects scope info and sends ballpark pricing instantly.</p>
+                            </div>
+                            <div class="bg-navy/60 rounded-xl p-4 border border-gray-800">
+                                <h4 class="font-semibold text-sm mb-1 text-white">Appointment Dispatch</h4>
+                                <p class="text-xs text-gray-400">Books service windows and sends confirmations/reminders.</p>
+                            </div>
+                            <div class="bg-navy/60 rounded-xl p-4 border border-gray-800">
+                                <h4 class="font-semibold text-sm mb-1 text-white">After-Hours Coverage</h4>
+                                <p class="text-xs text-gray-400">Captures emergency requests at any hour so no job slips away.</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-8">
+                            <span class="feature-tag">Plumbing & HVAC</span>
+                            <span class="feature-tag">Roofing</span>
+                            <span class="feature-tag">Landscaping</span>
+                            <span class="feature-tag">House Cleaning</span>
+                            <span class="feature-tag">Remodeling</span>
+                        </div>
+                        <a href="contact.html" class="block text-center bg-orange-500/15 hover:bg-orange-500/25 border border-orange-500/30 text-orange-400 font-semibold px-6 py-3 rounded-xl transition-colors">
+                            Build My Home Services AI →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- CARD 3: Retail / E-commerce -->
+                <div class="niche-card bg-slate border border-gray-800 rounded-3xl overflow-hidden">
+                    <div class="h-2 bg-gradient-to-r from-purple-500 to-pink-400"></div>
+                    <div class="p-8 lg:p-10">
+                        <div class="card-icon w-16 h-16 bg-purple-500/15 rounded-2xl flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-extrabold mb-3">Retail & E-commerce</h2>
+                        <p class="text-gray-400 mb-8 leading-relaxed">
+                            Local boutiques and online shops get a tireless sales assistant that knows your full catalog, handles order questions, recommends products, and recovers abandoned carts — privately.
+                        </p>
+                        <div class="grid sm:grid-cols-2 gap-3 mb-8">
+                            <div class="bg-navy/60 rounded-xl p-4 border border-gray-800">
+                                <h4 class="font-semibold text-sm mb-1 text-white">Product Recommendations</h4>
+                                <p class="text-xs text-gray-400">Suggests the right items based on customer needs and preferences.</p>
+                            </div>
+                            <div class="bg-navy/60 rounded-xl p-4 border border-gray-800">
+                                <h4 class="font-semibold text-sm mb-1 text-white">Order Status & Returns</h4>
+                                <p class="text-xs text-gray-400">Handles WISMO and return requests without human intervention.</p>
+                            </div>
+                            <div class="bg-navy/60 rounded-xl p-4 border border-gray-800">
+                                <h4 class="font-semibold text-sm mb-1 text-white">Abandoned Cart Recovery</h4>
+                                <p class="text-xs text-gray-400">Re-engages shoppers who leave without checking out.</p>
+                            </div>
+                            <div class="bg-navy/60 rounded-xl p-4 border border-gray-800">
+                                <h4 class="font-semibold text-sm mb-1 text-white">Loyalty & Promotions</h4>
+                                <p class="text-xs text-gray-400">Surfaces relevant discounts and rewards to the right customers.</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-8">
+                            <span class="feature-tag">Boutique Clothing</span>
+                            <span class="feature-tag">Specialty Food</span>
+                            <span class="feature-tag">Outdoor Gear</span>
+                            <span class="feature-tag">DTC Brands</span>
+                            <span class="feature-tag">Gift Shops</span>
+                        </div>
+                        <a href="contact.html" class="block text-center bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/30 text-purple-400 font-semibold px-6 py-3 rounded-xl transition-colors">
+                            Build My Retail AI →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- CARD 4: Real Estate -->
+                <div class="niche-card bg-slate border border-gray-800 rounded-3xl overflow-hidden">
+                    <div class="h-2 bg-gradient-to-r from-electric to-cyan-400"></div>
+                    <div class="p-8 lg:p-10">
+                        <div class="card-icon w-16 h-16 bg-electric/15 rounded-2xl flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-extrabold mb-3">Boutique Real Estate</h2>
+                        <p class="text-gray-400 mb-8 leading-relaxed">
+                            Independent agents and small brokerages get an AI that qualifies buyer/seller leads, schedules showings, answers property questions, and keeps your pipeline warm — all without a CRM upgrade.
+                        </p>
+                        <div class="grid sm:grid-cols-2 gap-3 mb-8">
+                            <div class="bg-navy/60 rounded-xl p-4 border border-gray-800">
+                                <h4 class="font-semibold text-sm mb-1 text-white">Lead Qualification</h4>
+                                <p class="text-xs text-gray-400">Identifies buyer readiness, budget, and timeline automatically.</p>
+                            </div>
+                            <div class="bg-navy/60 rounded-xl p-4 border border-gray-800">
+                                <h4 class="font-semibold text-sm mb-1 text-white">Showing Scheduler</h4>
+                                <p class="text-xs text-gray-400">Books tours and syncs with your Google Calendar instantly.</p>
+                            </div>
+                            <div class="bg-navy/60 rounded-xl p-4 border border-gray-800">
+                                <h4 class="font-semibold text-sm mb-1 text-white">Property Q&A</h4>
+                                <p class="text-xs text-gray-400">Answers listing questions from Zillow, website, and text inquiries.</p>
+                            </div>
+                            <div class="bg-navy/60 rounded-xl p-4 border border-gray-800">
+                                <h4 class="font-semibold text-sm mb-1 text-white">Pipeline Nurturing</h4>
+                                <p class="text-xs text-gray-400">Follows up with cold leads so no deal falls through the cracks.</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-8">
+                            <span class="feature-tag">Independent Agents</span>
+                            <span class="feature-tag">Small Brokerages</span>
+                            <span class="feature-tag">Property Management</span>
+                            <span class="feature-tag">Luxury Residential</span>
+                        </div>
+                        <a href="contact.html" class="block text-center bg-electric/15 hover:bg-electric/25 border border-electric/30 text-accent font-semibold px-6 py-3 rounded-xl transition-colors">
+                            Build My Real Estate AI →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CAPABILITIES OVERVIEW -->
+        <section class="py-20 px-4 bg-slate/40 border-y border-gray-800">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-14">
+                    <h2 class="text-3xl font-extrabold mb-4">Every Agent Includes</h2>
+                    <p class="text-gray-400">No matter the industry, every Atlas AI build comes with these foundations.</p>
+                </div>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="flex gap-3 items-start bg-navy/60 border border-gray-800 rounded-xl p-5">
+                        <div class="w-8 h-8 bg-electric/20 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                            <svg class="w-4 h-4 text-electric" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-sm mb-0.5">Private LLM on your hardware</h4>
+                            <p class="text-xs text-gray-400">Data never leaves your building.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 items-start bg-navy/60 border border-gray-800 rounded-xl p-5">
+                        <div class="w-8 h-8 bg-electric/20 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                            <svg class="w-4 h-4 text-electric" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-sm mb-0.5">Website chat widget</h4>
+                            <p class="text-xs text-gray-400">Embeds on any site in minutes.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 items-start bg-navy/60 border border-gray-800 rounded-xl p-5">
+                        <div class="w-8 h-8 bg-electric/20 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                            <svg class="w-4 h-4 text-electric" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-sm mb-0.5">Email & SMS integration</h4>
+                            <p class="text-xs text-gray-400">Reach customers on their preferred channel.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 items-start bg-navy/60 border border-gray-800 rounded-xl p-5">
+                        <div class="w-8 h-8 bg-electric/20 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                            <svg class="w-4 h-4 text-electric" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-sm mb-0.5">Analytics dashboard</h4>
+                            <p class="text-xs text-gray-400">Conversations, leads captured, and conversion rates.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 items-start bg-navy/60 border border-gray-800 rounded-xl p-5">
+                        <div class="w-8 h-8 bg-electric/20 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                            <svg class="w-4 h-4 text-electric" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-sm mb-0.5">Monthly model updates</h4>
+                            <p class="text-xs text-gray-400">We keep your AI current and fine-tuned.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 items-start bg-navy/60 border border-gray-800 rounded-xl p-5">
+                        <div class="w-8 h-8 bg-electric/20 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                            <svg class="w-4 h-4 text-electric" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-sm mb-0.5">Local support & on-site setup</h4>
+                            <p class="text-xs text-gray-400">Boulder-based team means we can actually show up.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="py-20 px-4">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="text-3xl font-extrabold mb-4">Don't See Your Industry?</h2>
+                <p class="text-gray-400 mb-8">We've built AI for restaurants, law firms, event venues, and more. If you have customers, we can help.</p>
+                <a href="contact.html" class="inline-block bg-electric hover:bg-blue-500 text-white font-bold px-10 py-4 rounded-xl text-lg shadow-xl shadow-blue-500/30 transition-all hover:scale-105">
+                    Let's Talk About Your Business
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate border-t border-gray-800 py-12 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center text-gray-400">
+            <a href="index.html" class="font-bold text-xl text-electric">Atlas AI</a>
+            <p class="mt-2 text-sm">Boulder, Colorado · Private AI for Local Businesses</p>
+            <div class="flex justify-center gap-6 mt-6 text-sm">
+                <a href="services.html" class="hover:text-white transition-colors">Services</a>
+                <a href="pricing.html" class="hover:text-white transition-colors">Pricing</a>
+                <a href="contact.html" class="hover:text-white transition-colors">Contact</a>
+            </div>
+            <p class="mt-8 text-xs text-gray-600">&copy; 2026 Atlas AI. Built with OpenClaw.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('nav-toggle').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('open');
+        });
+    </script>
+</body>
+</html>

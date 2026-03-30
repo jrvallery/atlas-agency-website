@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Atlas AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { navy: '#0f172a', slate: '#1e293b', electric: '#3b82f6', accent: '#60a5fa' } } } }
+    </script>
+    <style> body { background-color: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; } </style>
+</head>
+<body class="bg-navy text-white antialiased flex flex-col min-h-screen">
+    
+    <nav class="bg-slate border-b border-gray-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex-shrink-0 font-bold text-2xl tracking-tighter text-electric">Atlas AI</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="index.html" class="hover:text-accent px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="services.html" class="hover:text-accent px-3 py-2 rounded-md text-sm font-medium">Services</a>
+                        <a href="pricing.html" class="hover:text-accent px-3 py-2 rounded-md text-sm font-medium">Pricing</a>
+                        <a href="contact.html" class="text-accent px-3 py-2 rounded-md text-sm font-medium">Get Started</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow py-20">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-extrabold mb-4">Let's Automate Your Business</h1>
+                <p class="text-gray-400 text-lg">Drop your details below and we'll reach out to schedule a free consultation for your Boulder business.</p>
+            </div>
+
+            <div class="bg-slate p-8 rounded-2xl border border-gray-800 shadow-xl">
+                <form action="#" method="POST" class="space-y-6" onsubmit="event.preventDefault(); alert('Thanks! We will be in touch soon.');">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-300">Name</label>
+                        <input type="text" id="name" name="name" required class="mt-1 block w-full bg-navy border border-gray-700 rounded-md shadow-sm py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-electric focus:border-electric">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-300">Email Address</label>
+                        <input type="email" id="email" name="email" required class="mt-1 block w-full bg-navy border border-gray-700 rounded-md shadow-sm py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-electric focus:border-electric">
+                    </div>
+                    <div>
+                        <label for="business" class="block text-sm font-medium text-gray-300">Business Name</label>
+                        <input type="text" id="business" name="business" class="mt-1 block w-full bg-navy border border-gray-700 rounded-md shadow-sm py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-electric focus:border-electric">
+                    </div>
+                    <div>
+                        <label for="niche" class="block text-sm font-medium text-gray-300">Industry / Niche</label>
+                        <select id="niche" name="niche" class="mt-1 block w-full bg-navy border border-gray-700 rounded-md shadow-sm py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-electric focus:border-electric">
+                            <option value="">Select your industry...</option>
+                            <option value="health">Health, Wellness & Fitness</option>
+                            <option value="home">Home Services & Contractors</option>
+                            <option value="retail">Local Retail & E-commerce</option>
+                            <option value="realestate">Boutique Real Estate</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-300">How can we help?</label>
+                        <textarea id="message" name="message" rows="4" class="mt-1 block w-full bg-navy border border-gray-700 rounded-md shadow-sm py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-electric focus:border-electric"></textarea>
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full bg-electric hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-colors text-lg">
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-slate border-t border-gray-800 py-12 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center text-gray-400">
+            <p>&copy; 2026 Atlas AI. Boulder, Colorado. Built with OpenClaw.</p>
+        </div>
+    </footer>
+</body>
+</html>
