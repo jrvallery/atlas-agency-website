@@ -378,6 +378,7 @@
             let bubble;
             let reply = '';
             let resStatus = 200;
+            let bubble = null; // Initialize bubble outside the loop
             try {
                 const res = await fetch(CHAT_ENDPOINT, {
                     method: 'POST',
@@ -399,7 +400,7 @@
                             if (delta) {
                                 if (!bubble) { hideTyping(); bubble = addBubble('assistant', ''); }
                                 reply += delta;
-                                bubble.textContent = reply;
+                                bubble.textContent += delta;
                                 chatMessages.scrollTop = chatMessages.scrollHeight;
                             }
                         } catch {}
