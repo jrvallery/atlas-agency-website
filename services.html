@@ -385,5 +385,107 @@
             document.getElementById('mobile-menu').classList.toggle('open');
         });
     </script>
+
+    <!-- ===================== FLOATING CHAT WIDGET ===================== -->
+    <div id="chat-window" style="position:fixed;bottom:80px;left:16px;width:360px;height:500px;z-index:9999;display:none;flex-direction:column;background:#0d1117;border:1px solid rgba(59,130,246,0.4);border-radius:16px;overflow:hidden;box-shadow:0 25px 50px rgba(0,0,0,0.5);">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div style="width:32px;height:32px;border-radius:50%;background:rgba(59,130,246,0.2);border:1px solid rgba(59,130,246,0.4);display:flex;align-items:center;justify-content:center;font-size:14px;">🤖</div>
+                <div>
+                    <div style="font-size:13px;font-weight:600;color:#fff;">Atlas Co-pilot</div>
+                    <div style="font-size:11px;color:#4ade80;display:flex;align-items:center;gap:4px;"><span style="width:6px;height:6px;background:#4ade80;border-radius:50%;display:inline-block;"></span>Online</div>
+                </div>
+            </div>
+            <button onclick="toggleChat()" style="background:none;border:none;color:#9ca3af;cursor:pointer;padding:4px;font-size:18px;line-height:1;">✕</button>
+        </div>
+        <div id="chat-messages" style="flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px;"></div>
+        <div style="padding:12px;border-top:1px solid rgba(255,255,255,0.08);">
+            <form id="chat-form" style="display:flex;gap:8px;">
+                <input id="chat-input" type="text" placeholder="Ask about pricing, services..." autocomplete="off"
+                    style="flex:1;background:#1e2433;color:#fff;border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:10px 14px;font-size:13px;outline:none;"/>
+                <button type="submit" id="chat-send" style="background:#3b82f6;border:none;color:#fff;border-radius:10px;padding:10px 14px;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                </button>
+            </form>
+        </div>
+    </div>
+    <button id="chat-toggle" onclick="toggleChat()" style="position:fixed;bottom:16px;left:16px;z-index:9999;width:52px;height:52px;border-radius:50%;background:#3b82f6;border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(59,130,246,0.4);transition:transform 0.2s,background 0.2s;" onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='#3b82f6'">
+        <svg id="chat-icon-open" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+        <svg id="chat-icon-close" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="display:none;"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+    <!-- =============================================================== -->
+    <script>
+        const CHAT_ENDPOINT = '/api/chat';
+        const chatWindow   = document.getElementById('chat-window');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatForm     = document.getElementById('chat-form');
+        const chatInput    = document.getElementById('chat-input');
+        const chatSend     = document.getElementById('chat-send');
+        const iconOpen     = document.getElementById('chat-icon-open');
+        const iconClose    = document.getElementById('chat-icon-close');
+        const s = document.createElement('style');
+        s.textContent = `@keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-6px);opacity:1}}`;
+        document.head.appendChild(s);
+        let isOpen = false;
+        let messages = JSON.parse(sessionStorage.getItem('atlas-chat') || '[]');
+        if (!messages.length) messages = [{ role: 'assistant', content: "Hey! I\'m the Atlas co-pilot — a live demo of what we build for our clients. Ask me anything about services, pricing, or how it all works!" }];
+        function toggleChat() {
+            isOpen = !isOpen;
+            chatWindow.style.display = isOpen ? 'flex' : 'none';
+            iconOpen.style.display = isOpen ? 'none' : 'block';
+            iconClose.style.display = isOpen ? 'block' : 'none';
+            if (isOpen) { if (!chatMessages.children.length) renderHistory(); chatInput.focus(); chatMessages.scrollTop = chatMessages.scrollHeight; }
+        }
+        function renderHistory() { chatMessages.innerHTML = ''; messages.forEach(m => renderBubble(m.role, m.content)); }
+        function renderBubble(role, content) {
+            const wrap = document.createElement('div');
+            wrap.style.cssText = 'display:flex;gap:8px;' + (role === 'user' ? 'justify-content:flex-end;' : '');
+            if (role === 'assistant') {
+                wrap.innerHTML = `<div style="width:26px;height:26px;border-radius:50%;background:rgba(59,130,246,0.2);border:1px solid rgba(59,130,246,0.4);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:2px;">🤖</div><div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:14px;border-top-left-radius:4px;padding:10px 14px;color:#e2e8f0;max-width:260px;font-size:13px;line-height:1.5;text-align:left;" id="bubble-${Date.now()}"></div>`;
+            } else {
+                wrap.innerHTML = `<div style="background:rgba(59,130,246,0.18);border:1px solid rgba(59,130,246,0.3);border-radius:14px;border-top-right-radius:4px;padding:10px 14px;color:#fff;max-width:260px;font-size:13px;line-height:1.5;text-align:left;">${content}</div>`;
+            }
+            chatMessages.appendChild(wrap);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return role === 'assistant' ? wrap.querySelector('[id^="bubble-"]') : null;
+        }
+        function showTyping() {
+            const w = document.createElement('div'); w.id='typing-ind'; w.style.cssText='display:flex;gap:8px;';
+            w.innerHTML=`<div style="width:26px;height:26px;border-radius:50%;background:rgba(59,130,246,0.2);border:1px solid rgba(59,130,246,0.4);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:2px;">🤖</div><div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:14px;border-top-left-radius:4px;padding:12px 14px;display:flex;gap:5px;align-items:center;"><span style="width:7px;height:7px;background:#60a5fa;border-radius:50%;animation:typingBounce 1.2s infinite ease-in-out;"></span><span style="width:7px;height:7px;background:#60a5fa;border-radius:50%;animation:typingBounce 1.2s infinite ease-in-out 0.2s;"></span><span style="width:7px;height:7px;background:#60a5fa;border-radius:50%;animation:typingBounce 1.2s infinite ease-in-out 0.4s;"></span></div>`;
+            chatMessages.appendChild(w); chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        function hideTyping() { document.getElementById('typing-ind')?.remove(); }
+        function setLoading(on) {
+            chatSend.disabled = chatInput.disabled = on;
+            chatSend.innerHTML = on ? '<svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle style="opacity:.25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path style="opacity:.75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg>' : '<svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>';
+        }
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = chatInput.value.trim(); if (!text) return;
+            chatInput.value = '';
+            messages.push({ role: 'user', content: text });
+            renderBubble('user', text);
+            sessionStorage.setItem('atlas-chat', JSON.stringify(messages));
+            setLoading(true); showTyping();
+            let bubble = null, reply = '', resStatus = 200;
+            try {
+                const res = await fetch(CHAT_ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ model:'openclaw', stream:true, messages }) });
+                resStatus = res.status;
+                if (res.status === 429) throw new Error('rate_limited');
+                const reader = res.body.getReader(), dec = new TextDecoder();
+                while (true) {
+                    const { done, value } = await reader.read(); if (done) break;
+                    for (const line of dec.decode(value).split('\n')) {
+                        if (!line.startsWith('data: ') || line.includes('[DONE]')) continue;
+                        try { const delta = JSON.parse(line.slice(6))?.choices?.[0]?.delta?.content; if (delta) { if (!bubble) { hideTyping(); bubble = renderBubble('assistant',''); } reply += delta; bubble.textContent += delta; chatMessages.scrollTop = chatMessages.scrollHeight; } } catch {}
+                    }
+                }
+                messages.push({ role:'assistant', content:reply });
+                sessionStorage.setItem('atlas-chat', JSON.stringify(messages));
+            } catch { hideTyping(); if (!bubble) bubble = renderBubble('assistant',''); bubble.textContent = resStatus===429 ? "Too many messages — try again in a minute." : 'Connection error — demo may be offline. Try the contact page!'; }
+            setLoading(false); chatInput.focus();
+        });
+    </script>
+
 </body>
 </html>
