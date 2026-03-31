@@ -355,12 +355,15 @@
             setLoading(true);
             const bubble = addBubble('assistant', '');
             let reply = '';
+            let resStatus = 200;
             try {
                 const res = await fetch(CHAT_ENDPOINT, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ model: 'openclaw', stream: true, messages })
                 });
+                resStatus = res.status;
+                if (res.status === 429) throw new Error('rate_limited');
                 const reader = res.body.getReader();
                 const decoder = new TextDecoder();
                 while (true) {
@@ -377,7 +380,9 @@
                 }
                 messages.push({ role: 'assistant', content: reply });
             } catch (err) {
-                bubble.textContent = 'Connection error — the demo may be temporarily offline. Try the contact page to reach us directly!';
+                bubble.textContent = resStatus === 429
+                    ? "Slow down! You're sending too many messages. Try again in a minute."
+                    : 'Connection error — the demo may be temporarily offline. Try the contact page to reach us directly!';
             }
             setLoading(false);
             chatInput.focus();
