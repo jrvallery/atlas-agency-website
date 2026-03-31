@@ -316,6 +316,9 @@
     </script>
     <script>
         const CHAT_ENDPOINT = '/api/chat';
+        const style = document.createElement('style');
+        style.textContent = `@keyframes typingBounce { 0%,60%,100%{transform:translateY(0);opacity:.4} 30%{transform:translateY(-6px);opacity:1} }`;
+        document.head.appendChild(style);
 
         const messages = [];
         const chatMessages = document.getElementById('chat-messages');
@@ -330,11 +333,29 @@
                 wrap.innerHTML = `<div class="w-7 h-7 rounded-full bg-electric/20 border border-electric/40 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">🤖</div>
                     <div class="bg-white/8 border border-white/10 rounded-2xl rounded-tl-sm px-4 py-3 text-gray-200 max-w-xs text-left leading-relaxed" id="bubble-${Date.now()}"></div>`;
             } else {
-                wrap.innerHTML = `<div class="bg-electric/20 border border-electric/30 rounded-2xl rounded-tr-sm px-4 py-3 text-white max-w-xs text-left leading-relaxed">${text}</div>`;
+                wrap.innerHTML = `<div style="background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);" class="rounded-2xl rounded-tr-sm px-4 py-3 text-white max-w-xs text-left leading-relaxed">${text}</div>`;
             }
             chatMessages.appendChild(wrap);
             chatMessages.scrollTop = chatMessages.scrollHeight;
             return role === 'assistant' ? wrap.querySelector('[id^="bubble-"]') : null;
+        }
+
+        function showTyping() {
+            const wrap = document.createElement('div');
+            wrap.className = 'flex gap-3';
+            wrap.id = 'typing-indicator';
+            wrap.innerHTML = `<div class="w-7 h-7 rounded-full bg-electric/20 border border-electric/40 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">🤖</div>
+                <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);" class="rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-1.5">
+                    <span class="typing-dot" style="width:7px;height:7px;background:#60a5fa;border-radius:50%;display:inline-block;animation:typingBounce 1.2s infinite ease-in-out;"></span>
+                    <span class="typing-dot" style="width:7px;height:7px;background:#60a5fa;border-radius:50%;display:inline-block;animation:typingBounce 1.2s infinite ease-in-out 0.2s;"></span>
+                    <span class="typing-dot" style="width:7px;height:7px;background:#60a5fa;border-radius:50%;display:inline-block;animation:typingBounce 1.2s infinite ease-in-out 0.4s;"></span>
+                </div>`;
+            chatMessages.appendChild(wrap);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function hideTyping() {
+            document.getElementById('typing-indicator')?.remove();
         }
 
         function setLoading(on) {
@@ -353,7 +374,8 @@
             addBubble('user', text);
             messages.push({ role: 'user', content: text });
             setLoading(true);
-            const bubble = addBubble('assistant', '');
+            showTyping();
+            let bubble;
             let reply = '';
             let resStatus = 200;
             try {
@@ -374,12 +396,19 @@
                         if (!line.startsWith('data: ') || line.includes('[DONE]')) continue;
                         try {
                             const delta = JSON.parse(line.slice(6))?.choices?.[0]?.delta?.content;
-                            if (delta) { reply += delta; bubble.textContent = reply; chatMessages.scrollTop = chatMessages.scrollHeight; }
+                            if (delta) {
+                                if (!bubble) { hideTyping(); bubble = addBubble('assistant', ''); }
+                                reply += delta;
+                                bubble.textContent = reply;
+                                chatMessages.scrollTop = chatMessages.scrollHeight;
+                            }
                         } catch {}
                     }
                 }
                 messages.push({ role: 'assistant', content: reply });
             } catch (err) {
+                hideTyping();
+                if (!bubble) bubble = addBubble('assistant', '');
                 bubble.textContent = resStatus === 429
                     ? "Slow down! You're sending too many messages. Try again in a minute."
                     : 'Connection error — the demo may be temporarily offline. Try the contact page to reach us directly!';
