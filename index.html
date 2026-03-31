@@ -229,15 +229,36 @@
         <div class="max-w-3xl mx-auto text-center">
             <h2 class="text-3xl font-extrabold mb-4">Chat with the Atlas Co-pilot</h2>
             <p class="text-gray-400 mb-10">This agent is built on the exact same technology we deploy for our clients. Ask it about our pricing, services, or how managed AI hosting works!</p>
-            
-            <!-- OpenClaw Webchat Container -->
-            <div id="openclaw-webchat-container" class="bg-slate border border-electric/40 rounded-2xl h-[500px] flex flex-col overflow-hidden shadow-2xl shadow-blue-900/20 relative">
-                <!-- Placeholder before script loads -->
-                <div id="chat-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-gray-500 z-0">
-                    <div class="w-16 h-16 bg-electric/10 border border-electric/30 rounded-2xl flex items-center justify-center mb-4">
-                        <svg class="w-8 h-8 text-electric animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+
+            <!-- Chat Widget -->
+            <div class="bg-[#0d1117] border border-electric/40 rounded-2xl overflow-hidden shadow-2xl shadow-blue-900/20 flex flex-col" style="height:520px;">
+                <!-- Header -->
+                <div class="flex items-center gap-3 px-5 py-4 border-b border-white/10 bg-white/5">
+                    <div class="w-8 h-8 rounded-full bg-electric/20 border border-electric/40 flex items-center justify-center text-base">🤖</div>
+                    <div class="text-left">
+                        <p class="text-sm font-semibold text-white">Atlas</p>
+                        <p class="text-xs text-green-400 flex items-center gap-1"><span class="w-1.5 h-1.5 bg-green-400 rounded-full inline-block"></span>Online</p>
                     </div>
-                    <p class="text-sm font-medium">Connecting to Atlas Gateway...</p>
+                </div>
+                <!-- Messages -->
+                <div id="chat-messages" class="flex-1 overflow-y-auto px-5 py-4 space-y-4 text-sm">
+                    <div class="flex gap-3">
+                        <div class="w-7 h-7 rounded-full bg-electric/20 border border-electric/40 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">🤖</div>
+                        <div class="bg-white/8 border border-white/10 rounded-2xl rounded-tl-sm px-4 py-3 text-gray-200 max-w-xs text-left leading-relaxed">
+                            Hey! I'm the Atlas co-pilot — a live example of what we build for our clients. Ask me anything about our services, pricing, or how it all works!
+                        </div>
+                    </div>
+                </div>
+                <!-- Input -->
+                <div class="px-4 py-4 border-t border-white/10 bg-white/3">
+                    <form id="chat-form" class="flex gap-2">
+                        <input id="chat-input" type="text" placeholder="Ask about pricing, services, or how it works..." autocomplete="off"
+                            class="flex-1 bg-white/8 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-electric/60 transition-colors" />
+                        <button type="submit" id="chat-send"
+                            class="bg-electric hover:bg-blue-500 text-white px-4 py-3 rounded-xl transition-colors flex items-center justify-center min-w-[44px]">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -292,14 +313,79 @@
             observer.observe(el);
         });
     </script>
-    <script src="https://haven-weights-definition-types.trycloudflare.com/widget.js"></script>
     <script>
-        window.OpenClawWidget.init({
-            containerId: 'openclaw-webchat-container',
-            agentId: 'atlas_sales_bot',
-            gatewayUrl: 'https://haven-weights-definition-types.trycloudflare.com',
-            theme: 'dark',
-            primaryColor: '#3b82f6'
+        const GATEWAY = 'https://haven-weights-definition-types.trycloudflare.com';
+        const TOKEN   = '16cf6ab57c4ed94f2f0b114a84e1fb31a8752765c49bb350';
+        const AGENT   = 'atlas-demo';
+
+        const messages = [];
+        const chatMessages = document.getElementById('chat-messages');
+        const chatForm    = document.getElementById('chat-form');
+        const chatInput   = document.getElementById('chat-input');
+        const chatSend    = document.getElementById('chat-send');
+
+        function addBubble(role, text) {
+            const wrap = document.createElement('div');
+            wrap.className = 'flex gap-3' + (role === 'user' ? ' justify-end' : '');
+            if (role === 'assistant') {
+                wrap.innerHTML = `<div class="w-7 h-7 rounded-full bg-electric/20 border border-electric/40 flex items-center justify-center text-xs flex-shrink-0 mt-0.5">🤖</div>
+                    <div class="bg-white/8 border border-white/10 rounded-2xl rounded-tl-sm px-4 py-3 text-gray-200 max-w-xs text-left leading-relaxed" id="bubble-${Date.now()}"></div>`;
+            } else {
+                wrap.innerHTML = `<div class="bg-electric/20 border border-electric/30 rounded-2xl rounded-tr-sm px-4 py-3 text-white max-w-xs text-left leading-relaxed">${text}</div>`;
+            }
+            chatMessages.appendChild(wrap);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return role === 'assistant' ? wrap.querySelector('[id^="bubble-"]') : null;
+        }
+
+        function setLoading(on) {
+            chatSend.disabled = on;
+            chatInput.disabled = on;
+            chatSend.innerHTML = on
+                ? '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg>'
+                : '<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>';
+        }
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = chatInput.value.trim();
+            if (!text) return;
+            chatInput.value = '';
+            addBubble('user', text);
+            messages.push({ role: 'user', content: text });
+            setLoading(true);
+            const bubble = addBubble('assistant', '');
+            let reply = '';
+            try {
+                const res = await fetch(`${GATEWAY}/v1/chat/completions`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${TOKEN}`,
+                        'x-openclaw-agent-id': AGENT
+                    },
+                    body: JSON.stringify({ model: 'openclaw', stream: true, messages })
+                });
+                const reader = res.body.getReader();
+                const decoder = new TextDecoder();
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    const lines = decoder.decode(value).split('\n');
+                    for (const line of lines) {
+                        if (!line.startsWith('data: ') || line.includes('[DONE]')) continue;
+                        try {
+                            const delta = JSON.parse(line.slice(6))?.choices?.[0]?.delta?.content;
+                            if (delta) { reply += delta; bubble.textContent = reply; chatMessages.scrollTop = chatMessages.scrollHeight; }
+                        } catch {}
+                    }
+                }
+                messages.push({ role: 'assistant', content: reply });
+            } catch (err) {
+                bubble.textContent = 'Connection error — the demo may be temporarily offline. Try the contact page to reach us directly!';
+            }
+            setLoading(false);
+            chatInput.focus();
         });
     </script>
 </body>
